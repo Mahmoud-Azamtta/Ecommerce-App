@@ -1,7 +1,11 @@
 import React from "react";
 
 function Categories() {
-  return <div>Categories for user</div>;
+  return ( 
+    <div>
+
+    </div> 
+  );
 }
 
 export default Categories;

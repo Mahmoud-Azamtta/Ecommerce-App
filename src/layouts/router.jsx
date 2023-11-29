@@ -6,6 +6,7 @@ import AdminCategories from "../components/admin/Categories";
 import AdminLayout from "./AdminLayout";
 import Layout from "./Layout";
 import Register from "../components/web/Register";
+import Login from "../components/web/Login";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
+      },
+      {
+        path: "login",
+        element: <Login />
       },
       {
         path: "home",

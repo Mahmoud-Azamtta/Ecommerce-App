@@ -2,11 +2,14 @@ import React from "react";
 import Navbar from "../components/web/Navbar";
 import Footer from "../components/web/Footer";
 import { Outlet } from "react-router-dom";
-function Layout() {
+
+function Layout({user, setUser}) {
   return (
     <>
-      <Navbar />
-      <Outlet />
+      <Navbar user={user} setUser={setUser} />
+      <div className="dark:bg-gray-800 dark:text-gray-300">
+        <Outlet />
+      </div>
       <Footer />
     </>
   );
