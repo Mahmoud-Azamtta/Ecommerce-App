@@ -28,7 +28,7 @@ function Home() {
         <div className="content flex">
           <motion.h1
             className="text-9xl font-bold"
-            initial={{ x: -800, opacity: 0 }}
+            initial={{ x: -700, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1, }}
             viewport={{once: true}}
             transition={{ delay: 0.2, duration: 0.8, type: "spring" }}
