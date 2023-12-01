@@ -10,6 +10,7 @@ import Layout from "./layouts/Layout";
 import Register from "./components/web/Register";
 import Login from "./components/web/Login";
 import { jwtDecode } from "jwt-decode";
+import Products from "./components/web/Products";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -47,6 +48,14 @@ function App() {
         {
           path: "categories",
           element: <Categories />,
+        },
+        {
+          path: "products/:id",
+          element: <Products />,
+        },
+        {
+          path: "products",
+          element: <Products />,
         },
         {
           path: "*",

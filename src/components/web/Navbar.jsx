@@ -1,6 +1,7 @@
 import Container from "../shared/Container";
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { motion, MotionConfig } from "framer-motion";
 
 function Navbar({ user, setUser }) {
   const navItems = useRef(null);
@@ -106,12 +107,40 @@ function Navbar({ user, setUser }) {
                   </>
                 ) : (
                   <>
-                    <button className="mx-3 rounded-full bg-gradient-to-tr from-red-600 to-amber-500 px-4 py-1 text-white hover:from-amber-500 hover:to-red-600">
-                      <Link to={"/register"}>Create Account</Link>
-                    </button>
-                    <button className="mr-3 rounded-full bg-gradient-to-tr from-amber-500 to-orange-600  px-4 py-1 text-white hover:from-orange-600 hover:to-amber-500">
-                      <Link to={"/login"}>Login</Link>
-                    </button>
+                    <Link to={"/register"}>
+                      <motion.button
+                        initial={{
+                          background:
+                            "linear-gradient(45deg, rgba(220,38,38,1) 0%, rgba(245,158,11,1) 100%)",
+                        }}
+                        whileHover={{
+                          background:
+                            "linear-gradient(45deg, rgba(245,158,11,1) 0%, rgba(220,38,38,1) 100%)",
+                          scale: 1.05,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="mx-3 rounded-full bg-gradient-to-tr px-4 py-1 text-white "
+                      >
+                        Create Account
+                      </motion.button>
+                    </Link>
+                    <Link to={"/login"}>
+                      <motion.button
+                        initial={{
+                          background:
+                            "linear-gradient(45deg, rgba(245,158,11,1) 0%, rgba(234,88,12,1) 100%)",
+                        }}
+                        whileHover={{
+                          background:
+                            "linear-gradient(45deg, rgba(234,88,12,1) 0%, rgba(245,158,11,1) 100%)",
+                          scale: 1.05,
+                        }}
+                        whileTap={{ scale: 0.95 }}
+                        className="mr-3 rounded-full bg-gradient-to-tr px-4 py-1 text-white "
+                      >
+                        Login
+                      </motion.button>
+                    </Link>
                   </>
                 )}
               </div>
@@ -130,3 +159,6 @@ function Navbar({ user, setUser }) {
 }
 
 export default Navbar;
+
+// from-red-600 to-amber-500 hover:from-amber-500 hover:to-red-600
+// from-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-500

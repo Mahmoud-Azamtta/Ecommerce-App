@@ -5,6 +5,7 @@ import Container from "../shared/Container";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 function Register() {
@@ -104,9 +105,17 @@ function Register() {
 
   return (
     <>
-      <div className="dark:bg-blob-scene-orange bg-blob-scene-light flex h-screen items-center justify-center bg-cover bg-no-repeat">
-        <div className="register md:8/12 w-11/12 rounded-3xl border border-gray-600 px-5 py-6 shadow-xl dark:bg-gray-900 bg-white sm:w-8/12 sm:p-10 lg:w-7/12 xl:w-5/12">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-300">Create Account</h2>
+      <div className="flex h-screen items-center justify-center bg-blob-scene-light bg-cover bg-no-repeat dark:bg-blob-scene-orange">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.25 }}
+          viewport={{ once: true }}
+          className="register md:8/12 w-11/12 rounded-3xl border border-gray-600 bg-white px-5 py-6 shadow-xl dark:bg-gray-900 sm:w-8/12 sm:p-10 lg:w-7/12 xl:w-5/12"
+        >
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-300">
+            Create Account
+          </h2>
           <hr className="my-2" />
           <form
             action=""
@@ -131,7 +140,7 @@ function Register() {
             >
               CREATE
             </button>
-            <p className="text-sm mt-3 ml-3">
+            <p className="ml-3 mt-3 text-sm">
               Already have an account?{" "}
               <Link to="/login">
                 <span className="text-amber-500 hover:text-amber-600">
@@ -140,7 +149,7 @@ function Register() {
               </Link>
             </p>
           </form>
-        </div>
+        </motion.div>
       </div>
     </>
   );

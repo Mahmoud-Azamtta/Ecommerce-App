@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import Input from "../shared/Input";
 
 function Login({ saveCurrentUser }) {
@@ -75,14 +76,20 @@ function Login({ saveCurrentUser }) {
 
   return (
     <>
-      <div className="dark:bg-blob-scene-orange bg-blob-scene-light flex h-screen items-center justify-center bg-cover bg-no-repeat ">
-        <div className="login md:8/12 w-11/12 rounded-3xl border border-gray-600 px-5 py-6 shadow-xl dark:bg-gray-900 bg-white sm:w-8/12 sm:p-10 lg:w-7/12 xl:w-5/12">
+      <div className="flex h-screen items-center justify-center bg-blob-scene-light bg-cover bg-no-repeat dark:bg-blob-scene-orange ">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.25 }}
+          viewport={{once: true}}
+          className="login md:8/12 w-11/12 rounded-3xl border border-gray-600 bg-white px-5 py-6 shadow-xl dark:bg-gray-900 sm:w-8/12 sm:p-10 lg:w-7/12 xl:w-5/12"
+        >
           <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-300">
             Login
           </h2>
           <hr className="my-2" />
           {backendError && (
-            <p className="rounded-lg border border-red-500 dark:bg-red-950 bg-red-200 py-2 text-center text-red-500">
+            <p className="rounded-lg border border-red-500 bg-red-200 py-2 text-center text-red-500 dark:bg-red-950">
               {backendError}
             </p>
           )}
@@ -118,7 +125,7 @@ function Login({ saveCurrentUser }) {
               </Link>
             </p>
           </form>
-        </div>
+        </motion.div>
       </div>
     </>
   );
