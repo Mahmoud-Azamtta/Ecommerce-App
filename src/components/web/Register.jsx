@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Input from "../shared/Input";
 import { useFormik } from "formik";
 import Container from "../shared/Container";
@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 function Register() {
+  const [backendError, setBackendError] = useState("");
   const validationSchema = yup.object({
     userName: yup
       .string()
@@ -36,7 +37,7 @@ function Register() {
     const { data } = await axios
       .post(`${import.meta.env.VITE_API_URL}/auth/signup`, formData)
       .catch((error) => {
-        console.log(error);
+        setBackendError(error.response.data.message);
       });
     if (data.message == "success") {
       initiatToast();
@@ -108,15 +109,19 @@ function Register() {
       <div className="flex h-screen items-center justify-center bg-blob-scene-light bg-cover bg-no-repeat dark:bg-blob-scene-orange">
         <motion.div
           initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
           transition={{ duration: 0.25 }}
-          viewport={{ once: true }}
           className="register md:8/12 w-11/12 rounded-3xl border border-gray-600 bg-white px-5 py-6 shadow-xl dark:bg-gray-900 sm:w-8/12 sm:p-10 lg:w-7/12 xl:w-5/12"
         >
           <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-300">
             Create Account
           </h2>
           <hr className="my-2" />
+          {backendError && (
+            <p className="rounded-xl mt-3 border border-red-500 bg-red-200 py-2 text-center text-red-500 dark:bg-red-950">
+              {backendError}
+            </p>
+          )}
           <form
             action=""
             onSubmit={formik.handleSubmit}

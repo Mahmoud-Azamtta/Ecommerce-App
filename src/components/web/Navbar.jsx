@@ -1,11 +1,12 @@
 import Container from "../shared/Container";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, MotionConfig } from "framer-motion";
 
-function Navbar({ user, setUser }) {
+function Navbar({ user, setUser, setTheme }) {
   const navItems = useRef(null);
   const profileDropdown = useRef(null);
+  const themeButtonRef = useRef(null);
   const navigate = useNavigate();
 
   const handleBurgerClick = () => {
@@ -27,9 +28,29 @@ function Navbar({ user, setUser }) {
     navigate("/");
   };
 
+  const changeTheme = () => {
+    const theme = localStorage.getItem("theme");
+    if (theme == "dark") {
+      setTheme("light");
+      themeButtonRef.current.src = "/images/dark-mode.svg";
+    }
+    else {
+      setTheme("dark");
+      themeButtonRef.current.src = "/images/light-mode.svg";    
+    }
+  }
+
+  useEffect(() => {
+    const theme = localStorage.getItem("theme");
+    if (theme == "dark") 
+      themeButtonRef.current.src = "/images/light-mode.svg";    
+    else 
+      themeButtonRef.current.src = "/images/dark-mode.svg";
+  }, []); 
+
   return (
     <>
-      <nav className="navbar fixed w-full border-b border-gray-600 bg-gray-300 bg-opacity-50 py-2 text-black backdrop-blur-md dark:bg-gray-800 dark:bg-opacity-50 dark:text-white">
+      <nav className="navbar fixed z-50 w-full border-b border-gray-600 bg-gray-300 bg-opacity-50 py-2 text-black backdrop-blur-md dark:bg-gray-800 dark:bg-opacity-50 dark:text-white">
         <Container>
           <div className="text-md flex justify-between">
             <h2
@@ -40,7 +61,7 @@ function Navbar({ user, setUser }) {
             </h2>
             <div
               ref={navItems}
-              className="nav-items absolute right-0 top-16 w-auto translate-x-full items-center justify-between rounded-s-2xl border border-r-0 border-gray-600 bg-gray-300 p-3 transition-transform duration-300 ease-in-out dark:border-0 dark:bg-gray-900 md:static md:ml-5 md:flex md:w-full md:translate-x-0 md:border-0 md:bg-transparent md:py-0"
+              className="nav-items absolute right-0 top-16 w-auto translate-x-full items-center justify-between rounded-s-2xl border border-r-0 border-gray-600 p-3 transition-transform duration-300 ease-in-out dark:border-0 md:static md:ml-3 md:flex md:w-full md:translate-x-0 md:border-0 md:bg-transparent md:py-0"
             >
               <ul className="md:flex">
                 {user && (
@@ -83,7 +104,7 @@ function Navbar({ user, setUser }) {
                 {user ? (
                   <>
                     <button
-                      className="hidden items-center rounded-full bg-gray-100 px-2 py-1 transition hover:bg-gray-400 active:bg-gray-500 dark:bg-gray-300 md:flex"
+                      className="hidden items-center border border-gray-500 rounded-full bg-gray-200 px-2 py-1 transition dark:hover:bg-gray-400 hover:bg-gray-100 active:scale-95 md:flex"
                       onClick={handelDropdownClick}
                     >
                       <img src="/images/user.svg" className="mr-2" alt="" />
@@ -91,13 +112,13 @@ function Navbar({ user, setUser }) {
                     </button>
                     <div
                       ref={profileDropdown}
-                      className="absolute top-12 hidden rounded-md border border-gray-600 bg-gray-300 px-3 py-2 opacity-0 transition-all dark:border-0 dark:bg-gray-900"
+                      className="absolute top-12 hidden rounded-md border border-gray-600 bg-gray-200 px-3 py-2 opacity-0 transition-all dark:border-0 dark:bg-gray-900"
                     >
                       <ul>
-                        <li className="rounded-md px-2 text-black transition hover:bg-gray-400 dark:text-gray-300 dark:hover:bg-gray-600">
+                        <li className="rounded-md pl-2 pr-8 text-black transition hover:bg-gray-400 dark:text-gray-300 dark:hover:bg-gray-600">
                           <Link to={"/profile"}>Profile</Link>
                         </li>
-                        <li className="rounded-md px-2 text-black transition hover:bg-gray-400 dark:text-gray-300 dark:hover:bg-gray-600">
+                        <li className="rounded-md pl-2 pr-8 text-black transition hover:bg-gray-400 dark:text-gray-300 dark:hover:bg-gray-600">
                           <button type="button" onClick={handleLogout}>
                             Logout
                           </button>
@@ -145,12 +166,18 @@ function Navbar({ user, setUser }) {
                 )}
               </div>
             </div>
-            <button
-              className="block rounded-md px-2 transition hover:bg-gray-800 active:bg-gray-950 md:hidden"
-              onClick={handleBurgerClick}
-            >
-              <img src="/images/burger-menu.svg" alt="" />
-            </button>
+            <div className="flex ">
+              <button className="theme-toggler transition dark:hover:bg-gray-600
+              hover:bg-gray-100 p-2 rounded-full" onClick={changeTheme}>
+                <img ref={themeButtonRef} src="/images/dark-mode.svg" alt="" />
+              </button>
+              <button
+                className="block rounded-md px-2 transition hover:bg-gray-800 active:bg-gray-950 md:hidden"
+                onClick={handleBurgerClick}
+              >
+                <img src="/images/burger-menu.svg" alt="" />
+              </button>
+            </div>
           </div>
         </Container>
       </nav>

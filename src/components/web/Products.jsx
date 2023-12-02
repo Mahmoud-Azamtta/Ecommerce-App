@@ -21,22 +21,24 @@ function Products() {
   const { data, isLoading } = useQuery(queryKey, getProducts);
 
   if (isLoading) {
-    return (
-      <Loader />
-    )
+    return <Loader />;
   }
 
   return (
-    <motion.section initial={{opacity: 0}} whileInView={{opacity: 1}}  className="products">
+    <motion.section
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      className="products min-h-screen"
+    >
       <Container>
         <h1 className="pb-5 pt-20 text-4xl font-bold">Products</h1>
         <hr className="mb-10" />
-        <div className="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-8">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
           {data?.length ? (
             data?.map((product) => (
               <div
                 key={product._id}
-                className="product rounded-xl border border-gray-600 bg-gray-300 p-5 dark:bg-gray-900 shadow-lg"
+                className="product border border-gray-600 bg-gray-300 p-5 shadow-lg dark:bg-gray-900 dark:border-gray-600 rounded-lg"
               >
                 <img
                   src={product.mainImage.secure_url}
@@ -56,16 +58,16 @@ function Products() {
                       </p>
                       <p className="price">
                         <span className="text-sm text-gray-500 line-through">
-                          {product.price}
+                          {product.price}$
                         </span>
                         <span className="ml-2 font-bold dark:text-amber-500">
-                          {product.finalPrice}
+                          {product.finalPrice}$
                         </span>
                       </p>
                     </React.Fragment>
                   ) : (
-                    <p className="font-bold dark:text-amber-500">
-                      {product.price}
+                    <p className="font-bold dark:text-amber-500 text-lg">
+                      {product.price}$
                     </p>
                   )}
                 </div>

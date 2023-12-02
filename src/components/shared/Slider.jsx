@@ -11,12 +11,27 @@ function Slider({ slides, gap, children }) {
   return (
     <div className="">
       <Swiper
-        modules={[Navigation, Pagination, Autoplay, A11y]}
+        modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={gap}
-        slidesPerView={slides}
+        slidesPerView={1}
+        centeredSlides
         navigation
         autoplay
         loop
+        breakpoints={{
+          1200: {
+            slidesPerView: 5 
+          },
+          900: {
+            slidesPerView: 4
+          },
+          600: {
+            slidesPerView: 3
+          },
+          400: {
+            slidesPerView: 2
+          }
+        }}
         pagination={{ clickable: true }}
       >
         {children}

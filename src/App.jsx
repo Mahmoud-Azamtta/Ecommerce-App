@@ -14,21 +14,37 @@ import Products from "./components/web/Products";
 
 function App() {
   const [user, setUser] = useState(null);
-
+  const [theme, setTheme] = useState("");
   const saveCurrentUser = () => {
     const token = localStorage.getItem("userToken");
     const decoded = jwtDecode(token);
     setUser(decoded);
   };
 
+  const checkTheme = () => {
+    console.log(localStorage.theme);
+    if (localStorage.theme === "dark")
+      document.documentElement.classList.add("dark");
+    else document.documentElement.classList.remove("dark");
+  };
+
   useEffect(() => {
     if (localStorage.getItem("userToken")) saveCurrentUser();
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches))
+      setTheme("dark");
+    else 
+      setTheme("light"); 
   }, []);
+
+  useEffect(() => {
+    localStorage.theme = theme;
+    checkTheme();
+  }, [theme]);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout user={user} setUser={setUser} />,
+      element: <Layout user={user} setUser={setUser} setTheme={setTheme} />,
       // errorElement: <h2>404 page not found</h2>,
       children: [
         {
@@ -60,7 +76,7 @@ function App() {
         {
           path: "*",
           element: (
-            <div className="h-screen flex items-center justify-center">
+            <div className="flex h-screen items-center justify-center">
               <img src="/images/confused-emoji.svg" alt="broken link" />
               <h2 className="pl-5 text-5xl">Page not found</h2>
             </div>
