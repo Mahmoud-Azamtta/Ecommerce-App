@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
@@ -6,9 +6,11 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Input from "../shared/Input";
+import { UserContext } from "../../Contexts/UserContext";
 
-function Login({ saveCurrentUser }) {
+function Login() {
   const navigate = useNavigate();
+  const { setUserToken } = useContext(UserContext);
   const [backendError, setBackendError] = useState("");
   const validationSchema = yup.object({
     email: yup
@@ -28,7 +30,7 @@ function Login({ saveCurrentUser }) {
       initiatToast();
       formik.resetForm();
       localStorage.setItem("userToken", data.token);
-      saveCurrentUser();
+      setUserToken(data.token);
       navigate("/");
     }
   };
@@ -88,7 +90,7 @@ function Login({ saveCurrentUser }) {
           </h2>
           <hr className="my-2" />
           {backendError && (
-            <p className="rounded-xl mt-3 border border-red-500 bg-red-200 py-2 text-center text-red-500 dark:bg-red-950">
+            <p className="mt-3 rounded-xl border border-red-500 bg-red-200 py-2 text-center text-red-500 dark:bg-red-950">
               {backendError}
             </p>
           )}
@@ -108,9 +110,18 @@ function Login({ saveCurrentUser }) {
                 isTouched={formik.touched[input.name]}
               />
             ))}
+            <Link to="/forgot-pwd">
+              <span className="text-sm hover:text-amber-500 active:text-amber-600">
+                Forgot your password?
+              </span>
+            </Link>
             <button
               type="submit"
-              className="mt-3 rounded-full border bg-amber-500  px-4 py-1 text-white shadow transition hover:drop-shadow-lg active:bg-amber-600 disabled:bg-gray-200 disabled:text-gray-600 disabled:hover:drop-shadow-none"
+              className={`mt-3 block rounded-full bg-amber-500 px-4 py-1 text-lg text-white shadow-md transition ${
+                formik.isValid && formik.dirty
+                  ? "hover:scale-105 active:scale-95"
+                  : ""
+              } disabled:bg-gray-400 dark:bg-orange-500 dark:disabled:bg-gray-500`}
               disabled={!formik.isValid || !formik.dirty}
             >
               Login

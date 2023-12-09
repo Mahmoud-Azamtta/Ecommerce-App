@@ -1,9 +1,15 @@
 import Container from "../shared/Container";
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion, MotionConfig } from "framer-motion";
+import { motion } from "framer-motion";
+import { UserContext } from "../../Contexts/UserContext";
+import useTheme from "../../hooks/useTheme";
+import { CartContext } from "../../Contexts/CartContext";
 
-function Navbar({ user, setUser, setTheme }) {
+function Navbar() {
+  const { userToken, setUserToken } = useContext(UserContext);
+  const { count } = useContext(CartContext);
+  const { setTheme } = useTheme();
   const navItems = useRef(null);
   const profileDropdown = useRef(null);
   const themeButtonRef = useRef(null);
@@ -22,35 +28,32 @@ function Navbar({ user, setUser, setTheme }) {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("userToken");
-    setUser(null);
-    navigate("/");
-  };
-
   const changeTheme = () => {
     const theme = localStorage.getItem("theme");
     if (theme == "dark") {
       setTheme("light");
       themeButtonRef.current.src = "/images/dark-mode.svg";
-    }
-    else {
+    } else {
       setTheme("dark");
-      themeButtonRef.current.src = "/images/light-mode.svg";    
+      themeButtonRef.current.src = "/images/light-mode.svg";
     }
-  }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("userToken");
+    setUserToken(null);
+    navigate("/");
+  };
 
   useEffect(() => {
     const theme = localStorage.getItem("theme");
-    if (theme == "dark") 
-      themeButtonRef.current.src = "/images/light-mode.svg";    
-    else 
-      themeButtonRef.current.src = "/images/dark-mode.svg";
-  }, []); 
+    if (theme == "dark") themeButtonRef.current.src = "/images/light-mode.svg";
+    else themeButtonRef.current.src = "/images/dark-mode.svg";
+  }, []);
 
   return (
     <>
-      <nav className="navbar fixed z-50 w-full border-b border-gray-600 bg-gray-300 bg-opacity-50 py-2 text-black backdrop-blur-md dark:bg-gray-800 dark:bg-opacity-50 dark:text-white">
+      <nav className="navbar fixed z-50 w-full border-b border-gray-600 bg-gray-300 bg-opacity-50 py-2 text-black backdrop-blur-md dark:bg-gray-900 dark:bg-opacity-50 dark:text-white">
         <Container>
           <div className="text-md flex justify-between">
             <h2
@@ -61,17 +64,17 @@ function Navbar({ user, setUser, setTheme }) {
             </h2>
             <div
               ref={navItems}
-              className="nav-items absolute right-0 top-16 w-auto translate-x-full items-center justify-between rounded-s-2xl border border-r-0 border-gray-600 p-3 transition-transform duration-300 ease-in-out dark:border-0 md:static md:ml-3 md:flex md:w-full md:translate-x-0 md:border-0 md:bg-transparent md:py-0"
+              className="nav-items dakr:border absolute right-0 top-16 w-auto translate-x-full items-center justify-between rounded-s-2xl border border-r-0 border-gray-600 bg-gray-100 p-3 transition-transform duration-300 ease-in-out dark:border-gray-600 dark:bg-gray-900 md:static md:ml-3 md:flex md:w-full md:translate-x-0 md:border-0 md:bg-transparent md:py-0 md:dark:bg-transparent"
             >
               <ul className="md:flex">
-                {user && (
+                {userToken && (
                   <li
-                    className={`bndlock roued-md mx-1 px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600 md:hidden `}
+                    className={`mx-1 block rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600 md:hidden `}
                   >
                     <Link to={"/profile"}>Profile</Link>
                   </li>
                 )}
-                <li className="transitio mx-1 rounded-md px-2 py-1 hover:bg-gray-400 dark:hover:bg-gray-600">
+                <li className="mx-1 rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600">
                   <Link className="" to={"/"}>
                     Home
                   </Link>
@@ -86,7 +89,21 @@ function Navbar({ user, setUser, setTheme }) {
                     Products
                   </Link>
                 </li>
-                {user && (
+                {userToken && (
+                  <li
+                    className={`mx-1 rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600`}
+                  >
+                    <Link to={"/Cart"}>
+                      <span
+                        className={`relative`}
+                      >
+                        Cart
+                        <span className="absolute dark:bg-orange-500 bg-amber-500 dark:text-white text-black text-sm font-bold px-1 rounded-md -top-2">{count}</span>
+                      </span>
+                    </Link>
+                  </li>
+                )}
+                {userToken && (
                   <li
                     className={`mx-1 block rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600 md:hidden `}
                   >
@@ -98,13 +115,13 @@ function Navbar({ user, setUser, setTheme }) {
               </ul>
               <div
                 className={`md:flex ${
-                  user ? "hidden" : ""
+                  userToken ? "hidden" : ""
                 } account-buttons mb-1 mt-3 items-center md:my-0`}
               >
-                {user ? (
+                {userToken ? (
                   <>
                     <button
-                      className="hidden items-center border border-gray-500 rounded-full bg-gray-200 px-2 py-1 transition dark:hover:bg-gray-400 hover:bg-gray-100 active:scale-95 md:flex"
+                      className="hidden items-center rounded-full border border-gray-500 bg-gray-200 px-2 py-1 transition hover:bg-gray-100 active:scale-95 dark:hover:bg-gray-400 md:flex"
                       onClick={handelDropdownClick}
                     >
                       <img src="/images/user.svg" className="mr-2" alt="" />
@@ -166,9 +183,12 @@ function Navbar({ user, setUser, setTheme }) {
                 )}
               </div>
             </div>
-            <div className="flex ">
-              <button className="theme-toggler transition dark:hover:bg-gray-600
-              hover:bg-gray-100 p-2 rounded-full" onClick={changeTheme}>
+            <div className="flex items-center">
+              <button
+                className="theme-toggler rounded-full p-2
+              transition hover:bg-gray-100 dark:hover:bg-gray-600"
+                onClick={changeTheme}
+              >
                 <img ref={themeButtonRef} src="/images/dark-mode.svg" alt="" />
               </button>
               <button
@@ -186,6 +206,3 @@ function Navbar({ user, setUser, setTheme }) {
 }
 
 export default Navbar;
-
-// from-red-600 to-amber-500 hover:from-amber-500 hover:to-red-600
-// from-amber-500 to-orange-600 hover:from-orange-600 hover:to-amber-500

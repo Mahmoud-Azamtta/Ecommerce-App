@@ -14,14 +14,10 @@ function Slider({ slides, gap, children }) {
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={gap}
         slidesPerView={1}
-        centeredSlides
         navigation
         autoplay
         loop
         breakpoints={{
-          1200: {
-            slidesPerView: 5 
-          },
           900: {
             slidesPerView: 4
           },

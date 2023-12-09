@@ -55,7 +55,7 @@ function Home() {
       <section className="categories-view mb-10">
         <Container>
           <h1 className="py-10 text-4xl font-bold">Categories</h1>
-          <hr className="mb-10" />
+          <hr className="mb-10 dark:bg-gray-700" />
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -66,7 +66,7 @@ function Home() {
                 data?.categories.map((category) => (
                   <SwiperSlide key={category._id}>
                     <Link to={`/products/${category._id}`}>
-                      <div className="category flex flex-col items-center rounded-xl border border-gray-600 bg-gray-300 p-5 shadow-xl dark:bg-gray-900">
+                      <div className="category flex flex-col items-center rounded-xl border border-gray-700 bg-gray-300 p-5 shadow-xl dark:bg-gray-900">
                         <div className="image-wrapper">
                           <img
                             src={category.image.secure_url}

@@ -1,14 +1,18 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { motion } from "framer-motion";
 import Container from "../shared/Container";
 import Error from "../shared/Error";
 import Loader from "../shared/Loader";
+import { CartContext } from "../../Contexts/CartContext";
 
 function Products() {
   const { id } = useParams("id");
+
+  const { addProductToCart } = useContext(CartContext);
+
   const getProducts = async () => {
     let apiURL = `${import.meta.env.VITE_API_URL}/products`;
     if (id) apiURL += `/category/${id}`;
@@ -38,7 +42,7 @@ function Products() {
             data?.map((product) => (
               <div
                 key={product._id}
-                className="product border border-gray-600 bg-gray-300 p-5 shadow-lg dark:bg-gray-900 dark:border-gray-600 rounded-lg"
+                className="product flex flex-col justify-between rounded-lg border border-gray-600 bg-gray-300 p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900"
               >
                 <img
                   src={product.mainImage.secure_url}
@@ -66,10 +70,16 @@ function Products() {
                       </p>
                     </React.Fragment>
                   ) : (
-                    <p className="font-bold dark:text-amber-500 text-lg">
+                    <p className="text-lg font-bold dark:text-amber-500">
                       {product.price}$
                     </p>
                   )}
+                  <button
+                    className="mt-2 block w-full rounded-lg bg-amber-500 py-1 text-white shadow-lg transition hover:scale-105 active:scale-95 dark:bg-orange-500"
+                    onClick={() => addProductToCart(product._id)}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </div>
             ))

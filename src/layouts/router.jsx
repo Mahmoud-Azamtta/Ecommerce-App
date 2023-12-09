@@ -1,12 +1,31 @@
 import { createBrowserRouter } from "react-router-dom";
-import Categories from "../components/web/Categories";
-import Home from "../components/web/Home";
-import AdminHome from "../components/admin/Home";
-import AdminCategories from "../components/admin/Categories";
-import AdminLayout from "./AdminLayout";
-import Layout from "./Layout";
 import Register from "../components/web/Register";
 import Login from "../components/web/Login";
+import ForgotPwd from "../components/web/ForgotPwd";
+import Home from "../components/web/Home";
+import Categories from "../components/web/Categories";
+import Products from "../components/web/Products";
+import Cart from "../components/web/Cart";
+import AdminLayout from "./AdminLayout";
+import AdminHome from "../components/admin/Home";
+import AdminCategories from "../components/admin/Categories";
+import Layout from "./Layout";
+import ProtectedRoute from "../components/web/ProtectedRoute";
+import { useContext } from "react";
+import { UserContext } from "../Contexts/UserContext";
+import Profile from "../components/web/Profile";
+import UserInfo from "../components/web/UserInfo";
+import Contacts from "../components/web/Contacts";
+
+const isLoggedin = () => {
+  const { userToken } = useContext(UserContext);
+  return userToken;
+};
+
+const isNotLoggedin = () => {
+  const { userToken } = useContext(UserContext);
+  return !userToken;
+};
 
 export const router = createBrowserRouter([
   {
@@ -16,23 +35,77 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "register",
-        element: <Register />,
+        element: (
+          <ProtectedRoute condition={isNotLoggedin} replacementRoute={"/"}>
+            <Register />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "login",
-        element: <Login />
+        element: (
+          <ProtectedRoute condition={isNotLoggedin} replacementRoute={"/"}>
+            <Login />
+          </ProtectedRoute>
+        ),
       },
       {
-        path: "home",
+        path: "forgot-pwd",
+        element: <ForgotPwd />,
+      },
+      {
+        // can be written in two ways
+        // path: "/"
+        // or index: true
+        index: true,
         element: <Home />,
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute condition={isLoggedin} replacementRoute={"/login"}>
+            <Profile />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <UserInfo />
+          },
+          {
+            path: "user-contacts",
+            element: <Contacts />
+          }
+        ]
       },
       {
         path: "categories",
         element: <Categories />,
       },
       {
+        path: "products/:id",
+        element: <Products />,
+      },
+      {
+        path: "products",
+        element: <Products />,
+      },
+      {
+        path: "cart",
+        element: (
+          <ProtectedRoute condition={isLoggedin} replacementRoute={"/login"}>
+            <Cart />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "*",
-        element: <h2>Page not found</h2>,
+        element: (
+          <div className="flex h-screen items-center justify-center">
+            <img src="/images/confused-emoji.svg" alt="broken link" />
+            <h2 className="pl-5 text-5xl">Page not found</h2>
+          </div>
+        ),
       },
     ],
   },
