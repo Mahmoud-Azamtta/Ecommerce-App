@@ -6,7 +6,11 @@ function Categories() {
   const { data, isLoading } = useQuery("web_categories");
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   return (

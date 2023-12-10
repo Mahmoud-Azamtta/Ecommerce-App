@@ -19,17 +19,24 @@ function Home() {
   const { data, isLoading } = useQuery("web_categories", getCategories);
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   return (
     <div>
-      <motion.header initial={{  }} className="item-center flex h-screen flex-col items-center justify-center border-b border-gray-500 bg-home-blob-light bg-cover bg-no-repeat dark:bg-home-blob-dark">
+      <motion.header
+        initial={{}}
+        className="item-center flex h-screen flex-col items-center justify-center border-b border-gray-500 bg-home-blob-light bg-cover bg-no-repeat dark:bg-home-blob-dark"
+      >
         <div className="content flex">
           <motion.h1
-            className="md:text-9xl sm:text-7xl dark:text-white text-6xl font-bold"
+            className="text-6xl font-bold dark:text-white sm:text-7xl md:text-9xl"
             initial={{ x: -500, opacity: 0 }}
-            animate={{ x: 0, opacity: 1, }}
+            animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8, type: "spring" }}
           >
             Moe
@@ -37,8 +44,14 @@ function Home() {
           <motion.p
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ delay: 0.8, duration: 0.8, type: "spring", stiffness: 200, damping: 12 }}
-            className="md:text-9xl sm:text-7xl text-6xl font-bold dark:text-white"
+            transition={{
+              delay: 0.8,
+              duration: 0.8,
+              type: "spring",
+              stiffness: 200,
+              damping: 12,
+            }}
+            className="text-6xl font-bold dark:text-white sm:text-7xl md:text-9xl"
           >
             Shop
           </motion.p>
@@ -46,8 +59,8 @@ function Home() {
         <motion.p
           initial={{ opacity: 0, y: 300 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{delay: 1.2, duration: 0.8, type: "spring"}}
-          className="md:text-3xl sm:text-2xl text-xl italic dark:text-white"
+          transition={{ delay: 1.2, duration: 0.8, type: "spring" }}
+          className="text-xl italic dark:text-white sm:text-2xl md:text-3xl"
         >
           Shopping Made Easy
         </motion.p>
@@ -68,12 +81,9 @@ function Home() {
                     <Link to={`/products/${category._id}`}>
                       <div className="category flex flex-col items-center rounded-xl border border-gray-700 bg-gray-300 p-5 shadow-xl dark:bg-gray-900">
                         <div className="image-wrapper">
-                          <img
-                            src={category.image.secure_url}
-                            alt="category"
-                          />
+                          <img src={category.image.secure_url} alt="category" />
                         </div>
-                        <h2 className="text-center text-md font-bold capitalize">
+                        <h2 className="text-md text-center font-bold capitalize">
                           {category.name}
                         </h2>
                       </div>

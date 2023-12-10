@@ -6,6 +6,7 @@ export const CartContext = createContext(null);
 
 export function CartContextProvider({ children }) {
   const token = localStorage.getItem("userToken");
+  const [loading, setLoading] = useState(false);
   const [count, setCount] = useState(0);
   const addProductToCart = async (productId) => {
     try {
@@ -35,15 +36,34 @@ export function CartContextProvider({ children }) {
   };
 
   const removeProduct = async (productId) => {
+    setLoading(true);
     try {
       const { data } = await axios.patch(
         `${import.meta.env.VITE_API_URL}/cart/removeItem`,
         { productId },
         { headers: { Authorization: `Tariq__${token}` } },
       );
+      setLoading(false);
       return data;
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      return error;
+    }
+  };
+
+  const clearCart = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/cart/clear`,
+        { header: { Authorization: `Tariq__${token}` } },
+      );
+      setLoading(false);
+      return data;
+    } catch (error) {
+      setLoading(false);
+      initiatToast(true, "An error occurred");
+      return error;
     }
   };
 
@@ -79,7 +99,16 @@ export function CartContextProvider({ children }) {
   }, []);
 
   return (
-    <CartContext.Provider value={{ addProductToCart, getCartProducts, removeProduct, count }}>
+    <CartContext.Provider
+      value={{
+        addProductToCart,
+        getCartProducts,
+        removeProduct,
+        count,
+        clearCart,
+        loading,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );

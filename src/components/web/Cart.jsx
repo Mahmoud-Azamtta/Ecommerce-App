@@ -9,8 +9,8 @@ import Error from "../shared/Error";
 function Cart() {
   const [coupon, setCoupon] = useState("");
   const [shippingOption, setShippingOoption] = useState("freeShipping");
-
-  const { getCartProducts, removeProduct } = useContext(CartContext);
+  const { getCartProducts, removeProduct, clearCart, loading } =
+    useContext(CartContext);
   const getCart = async () => {
     const result = await getCartProducts();
     return result;
@@ -20,10 +20,19 @@ function Cart() {
     const result = await removeProduct(productId);
   };
 
+  const clearAll = async () => {
+    const result = await clearCart();
+    console.log(result.message);
+  }
+
   const { data, isLoading } = useQuery("cart", getCart);
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   return (
@@ -31,75 +40,81 @@ function Cart() {
       <h2 className="pb-10 pt-20 text-4xl font-bold">Prodcuts in Cart</h2>
       <hr className="mb-5" />
       <div className="grid min-h-screen grid-cols-6 gap-5">
-        <div className="col-span-4">
-          {data?.products ? (
-            data.products.length ? (
-              data.products.map((product) => (
-                <div
-                  key={product._id}
-                  className="product my-5 rounded-xl border border-gray-300 bg-gray-200 p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900"
-                >
-                  <div className="grid grid-cols-6 gap-5">
-                    <div className="product-image flex items-center">
-                      <img
-                        src={product.details.mainImage.secure_url}
-                        alt="product picture"
-                        className="w-full"
-                      />
-                    </div>
-                    <div className="product-info col-span-2 flex flex-col justify-center">
-                      <h3 className="product-title text-lg font-bold">
-                        {product.details.name}
-                      </h3>
-                      <p className="color">
-                        Color:{" "}
-                        <span className="picked-color">
-                          {product.details.colors.length
-                            ? product.details.colors[0]
-                            : "default"}
-                        </span>
-                      </p>
-                      <button
-                        className="mt-1 rounded-lg border border-red-600 bg-red-200 py-1 text-red-600 transition hover:scale-105 active:scale-95 dark:bg-red-950"
-                        onClick={() => removeCartItem(product.details._id)}
-                      >
-                        Remove
-                      </button>
-                    </div>
-                    <div className="quantity flex justify-center">
-                      <div className="buttons flex flex-col items-center justify-center ">
-                        <button className="increase rotate-180 rounded-full bg-gray-300 p-0.5 text-lg hover:bg-gray-100 dark:bg-gray-300 dark:hover:bg-gray-400">
-                          <img src="/images/angle-down.svg" alt="icon" />
-                        </button>
-                        <span className="amount text-lg">
-                          {product.quantity}
-                        </span>
-                        <button className="decrease hello rounded-full bg-gray-300 p-0.5 text-lg hover:bg-gray-100 dark:bg-gray-300 dark:hover:bg-gray-400">
-                          <img src="/images/angle-down.svg" alt="" />
+        {!loading ? (
+          <div className="col-span-4">
+            {data?.products ? (
+              data.products.length ? (
+                data.products.map((product) => (
+                  <div
+                    key={product._id}
+                    className="product my-5 rounded-xl border border-gray-300 bg-gray-200 p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900"
+                  >
+                    <div className="grid grid-cols-6 gap-5">
+                      <div className="product-image flex items-center">
+                        <img
+                          src={product.details.mainImage.secure_url}
+                          alt="product picture"
+                          className="w-full rounded-md shadow-lg"
+                        />
+                      </div>
+                      <div className="product-info col-span-2 flex flex-col justify-center">
+                        <h3 className="product-title text-lg font-bold">
+                          {product.details.name}
+                        </h3>
+                        <p className="color">
+                          Color:{" "}
+                          <span className="picked-color">
+                            {product.details.colors.length
+                              ? product.details.colors[0]
+                              : "default"}
+                          </span>
+                        </p>
+                        <button
+                          className="mt-2 w-fit rounded-lg border border-red-600 bg-red-200 p-2 text-red-600 shadow-lg transition hover:scale-105 active:scale-95 dark:bg-red-950"
+                          onClick={() => removeProduct(product.details._id)}
+                        >
+                          <img src="/images/trash.svg" alt="remove icon" />
                         </button>
                       </div>
+                      <div className="quantity flex justify-center border-x border-gray-300 dark:border-gray-700">
+                        <div className="buttons flex flex-col items-center justify-center ">
+                          <button className="increase rotate-180 rounded-full bg-gray-300 p-0.5 text-lg hover:bg-gray-100 dark:bg-gray-300 dark:hover:bg-gray-400">
+                            <img src="/images/angle-down.svg" alt="icon" />
+                          </button>
+                          <span className="amount text-lg">
+                            {product.quantity}
+                          </span>
+                          <button className="decrease hello rounded-full bg-gray-300 p-0.5 text-lg hover:bg-gray-100 dark:bg-gray-300 dark:hover:bg-gray-400">
+                            <img src="/images/angle-down.svg" alt="" />
+                          </button>
+                        </div>
+                      </div>
+                      <p className="price my-auto text-center text-lg">
+                        <span className="font-bold">Price:</span>{" "}
+                        <span>{product.details.price}</span>$
+                      </p>
+                      <p className="sub-total my-auto text-center text-lg">
+                        <span className="font-bold">Total:</span>{" "}
+                        <span>{product.details.finalPrice}</span>$
+                      </p>
                     </div>
-                    <p className="price my-auto text-center text-lg">
-                      <span className="font-bold">Price:</span>{" "}
-                      <span>{product.details.price}</span>$
-                    </p>
-                    <p className="sub-total my-auto text-center text-lg">
-                      <span className="font-bold">Total:</span>{" "}
-                      <span>{product.details.finalPrice}</span>$
-                    </p>
                   </div>
+                ))
+              ) : (
+                <div className="flex h-1/2 w-full items-center justify-center">
+                  <p className="text-lg font-bold">Cart is empty...</p>
                 </div>
-              ))
+              )
             ) : (
-              <div className="flex h-1/2 w-full items-center justify-center">
-                <p className="text-lg font-bold">Cart is empty...</p>
-              </div>
-            )
-          ) : (
-            <Error message={"Couldn't load cart"} />
-          )}
-        </div>
-        <div className="col-span-2 ">
+              <Error message={"Couldn't load cart"} />
+            )}
+          </div>
+        ) : (
+          <div className="col-span-4 h-1/2">
+            <Loader />
+          </div>
+        )}
+        <div className="col-span-2">
           <div className="summary my-5 rounded-xl border border-gray-300 bg-gray-200 p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900">
             <h2 className="mb-3 border-b border-gray-300 pb-3 text-center text-2xl font-bold dark:border-gray-700">
               Cart Summary
@@ -182,14 +197,30 @@ function Cart() {
                 $
               </span>
             </div>
-            <button
-              className={`w-full rounded-md bg-amber-500 py-1 text-lg text-white shadow-md transition ${
-                data?.products.length ? "hover:scale-105 active:scale-95" : ""
-              } disabled:bg-gray-400 dark:bg-orange-500 dark:disabled:bg-gray-500`}
-              disabled={!data?.products.length}
-            >
-              Checkout
-            </button>
+            <div className="buttons grid grid-cols-3 gap-5">
+              <button
+                className={`col-span-2 rounded-md bg-amber-500 py-1 text-lg text-white shadow-md transition ${
+                  data?.products.length ? "hover:scale-105 active:scale-95" : ""
+                } disabled:bg-gray-400 dark:bg-orange-500 dark:disabled:bg-gray-500`}
+                disabled={!data?.products.length}
+              >
+                Checkout
+              </button>
+              <button
+                className={`flex items-center justify-center rounded-md border border-red-600 bg-red-200 py-1 text-lg text-red-600 shadow-md transition ${
+                  data?.products.length ? "hover:scale-105 active:scale-95" : ""
+                } disabled:border-0 disabled:bg-gray-400 disabled:text-white dark:bg-red-950 dark:disabled:bg-gray-500`}
+                disabled={!data?.products.length}
+                onClick={clearAll}
+              >
+                <img
+                  src="/images/trash.svg"
+                  alt="remove icon"
+                  className="mr-2"
+                />
+                Clear All
+              </button>
+            </div>
           </div>
         </div>
       </div>

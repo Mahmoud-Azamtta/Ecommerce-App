@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { UserContext } from "../../Contexts/UserContext";
 
 function Profile() {
+  const { isLoading } = useContext(UserContext);
+
+  if (isLoading) {
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    );
+  }
   return (
     <section className="min-h-screen bg-blob-scene-light bg-cover bg-no-repeat dark:bg-blob-scene-orange">
       <div className="grid grid-cols-6 gap-10">

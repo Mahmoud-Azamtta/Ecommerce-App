@@ -3,11 +3,7 @@ import { UserContext } from "../../Contexts/UserContext";
 import Loader from "../shared/Loader";
 
 function UserInfo() {
-  const { userData, isLoading } = useContext(UserContext);
-
-  if (isLoading) {
-    return <Loader />
-  }
+  const { userData } = useContext(UserContext);
 
   return (
     <React.Fragment>
@@ -18,14 +14,16 @@ function UserInfo() {
           className="w-1/3 rounded-xl border border-gray-700"
         />
       </div>
-      <h1 className="text-center capitalize mt-5 text-4xl font-bold pb-3 border-b dark:border-gray-600 border-gray-300">{userData.user.userName}</h1>
-      <div className="w-8/12 mx-auto mt-5">
+      <h1 className="mt-5 border-b border-gray-300 pb-3 text-center text-4xl font-bold capitalize dark:border-gray-600">
+        {userData.user.userName}
+      </h1>
+      <div className="mx-auto mt-5 w-8/12">
         <div className="flex justify-between">
-          <span className="font-bold text-lg">Role</span>
+          <span className="text-lg font-bold">Role</span>
           <span className="text-lg">{userData.user.role}</span>
         </div>
         <div className="flex justify-between">
-          <span className="font-bold text-lg">Status</span>
+          <span className="text-lg font-bold">Status</span>
           <span className="text-lg">{userData.user.status}</span>
         </div>
       </div>

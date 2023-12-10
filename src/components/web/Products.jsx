@@ -25,7 +25,11 @@ function Products() {
   const { data, isLoading } = useQuery(queryKey, getProducts);
 
   if (isLoading) {
-    return <Loader />;
+    return (
+      <div className="h-screen">
+        <Loader />
+      </div>
+    );
   }
 
   return (
