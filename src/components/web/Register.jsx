@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import Input from "../shared/Input";
 import { useFormik } from "formik";
-import Container from "../shared/Container";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -9,6 +8,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 function Register() {
+  const buttonRef = useRef(null);
+  const [isLoading, setLoading] = useState(false);
   const [backendError, setBackendError] = useState("");
   const validationSchema = yup.object({
     userName: yup
@@ -28,6 +29,8 @@ function Register() {
   });
 
   const submitData = async (user) => {
+    setLoading(true);
+    buttonRef.current.disabled = true;
     const formData = new FormData();
     formData.append("userName", user.userName);
     formData.append("email", user.email);
@@ -38,9 +41,13 @@ function Register() {
       .post(`${import.meta.env.VITE_API_URL}/auth/signup`, formData)
       .catch((error) => {
         setBackendError(error.response.data.message);
+        setLoading(false);
+        buttonRef.current.disabled = false;
       });
     if (data.message == "success") {
       initiatToast();
+      setLoading(false);
+      buttonRef.current.disabled = false;
       formik.resetForm();
     }
   };
@@ -118,7 +125,7 @@ function Register() {
           </h2>
           <hr className="my-2" />
           {backendError && (
-            <p className="rounded-xl mt-3 border border-red-500 bg-red-200 py-2 text-center text-red-500 dark:bg-red-950">
+            <p className="mt-3 rounded-xl border border-red-500 bg-red-200 py-2 text-center text-red-500 dark:bg-red-950">
               {backendError}
             </p>
           )}
@@ -139,11 +146,23 @@ function Register() {
               />
             ))}
             <button
+              ref={buttonRef}
               type="submit"
-              className="mt-3 rounded-full border bg-amber-500  px-4 py-1 text-white shadow transition hover:drop-shadow-lg active:bg-amber-600 disabled:bg-gray-200 disabled:text-gray-600 disabled:hover:drop-shadow-none"
+              className={`relative mt-5 flex items-center justify-center rounded-full bg-amber-500 px-4 py-1 text-lg text-white shadow-md transition ${
+                formik.isValid && formik.dirty
+                  ? "hover:scale-105 active:scale-95"
+                  : ""
+              } disabled:bg-gray-400 dark:bg-orange-500 dark:disabled:bg-gray-500`}
               disabled={!formik.isValid || !formik.dirty}
             >
-              CREATE
+              <>
+                {isLoading && (
+                  <span className="absolute flex items-center justify-center">
+                    <span className="loader absolute h-8 w-8 before:h-8 before:w-8 before:border-black after:h-8 after:w-8 after:border-black dark:before:border-white dark:after:border-white"></span>
+                  </span>
+                )}
+                <span className={`${isLoading && "opacity-0"}`}>Register</span>
+              </>
             </button>
             <p className="ml-3 mt-3 text-sm">
               Already have an account?{" "}

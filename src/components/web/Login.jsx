@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
@@ -10,6 +10,8 @@ import { UserContext } from "../../Contexts/UserContext";
 
 function Login() {
   const navigate = useNavigate();
+  const buttonRef = useRef(null);
+  const [isLoading, setLoading] = useState(false);
   const { setUserToken } = useContext(UserContext);
   const [backendError, setBackendError] = useState("");
   const validationSchema = yup.object({
@@ -21,15 +23,21 @@ function Login() {
   });
 
   const submitData = async (user) => {
+    setLoading(true);
+    buttonRef.current.disabled = true;
     const { data } = await axios
       .post(`${import.meta.env.VITE_API_URL}/auth/signin`, user)
       .catch((error) => {
         setBackendError(error.response.data.message);
+        setLoading(false);
+        buttonRef.current.disabled = false;
       });
     if (data.message == "success") {
       initiatToast();
       formik.resetForm();
       localStorage.setItem("userToken", data.token);
+      setLoading(false);
+      buttonRef.current.disabled = false;
       setUserToken(data.token);
       navigate("/");
     }
@@ -116,15 +124,23 @@ function Login() {
               </span>
             </Link>
             <button
+              ref={buttonRef}
               type="submit"
-              className={`mt-3 block rounded-full bg-amber-500 px-4 py-1 text-lg text-white shadow-md transition ${
+              className={`relative mt-5 flex items-center justify-center rounded-full bg-amber-500 px-4 py-1 text-lg text-white shadow-md transition ${
                 formik.isValid && formik.dirty
                   ? "hover:scale-105 active:scale-95"
                   : ""
               } disabled:bg-gray-400 dark:bg-orange-500 dark:disabled:bg-gray-500`}
               disabled={!formik.isValid || !formik.dirty}
             >
-              Login
+              <>
+                {isLoading && (
+                  <span className="absolute flex items-center justify-center">
+                    <span className="loader absolute h-8 w-8 before:h-8 before:w-8 before:border-black after:h-8 after:w-8 after:border-black dark:before:border-white dark:after:border-white"></span>
+                  </span>
+                )}
+                <span className={`${isLoading && "opacity-0"}`}>Login</span>
+              </>
             </button>
             <p className="ml-3 mt-3 text-sm">
               Don't have an account?{" "}

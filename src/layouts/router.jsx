@@ -16,6 +16,7 @@ import { UserContext } from "../Contexts/UserContext";
 import Profile from "../components/web/Profile";
 import UserInfo from "../components/web/UserInfo";
 import Contacts from "../components/web/Contacts";
+import ResetPwd from "../components/web/ResetPwd";
 
 const isLoggedin = () => {
   const { userToken } = useContext(UserContext);
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
         element: <ForgotPwd />,
       },
       {
+        path: "reset-pwd",
+        element: <ResetPwd />,
+      },
+      {
         // can be written in two ways
         // path: "/"
         // or index: true
@@ -70,13 +75,13 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
-            element: <UserInfo />
+            element: <UserInfo />,
           },
           {
             path: "user-contacts",
-            element: <Contacts />
-          }
-        ]
+            element: <Contacts />,
+          },
+        ],
       },
       {
         path: "categories",

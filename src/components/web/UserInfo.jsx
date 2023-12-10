@@ -1,9 +1,14 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../Contexts/UserContext";
+import Loader from "../shared/Loader";
 
 function UserInfo() {
-  const { userData } = useContext(UserContext);
-  console.log(userData);
+  const { userData, isLoading } = useContext(UserContext);
+
+  if (isLoading) {
+    return <Loader />
+  }
+
   return (
     <React.Fragment>
       <div className="flex justify-center">

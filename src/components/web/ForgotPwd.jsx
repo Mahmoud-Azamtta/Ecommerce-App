@@ -1,13 +1,39 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useFormik } from "formik";
 import axios from "axios";
 import Input from "../shared/Input";
 import Categories from "./Categories";
+import { useNavigate } from "react-router-dom";
 
 function ForgotPwd() {
+  const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(false);
+  const buttonRef = useRef(null);
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  const submitEmail = async (values) => {
+    setLoading(true);
+    buttonRef.current.disabled = true;
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/auth/sendcode`,
+        values,
+      );
+      console.log(data);
+      if (data.message == "success") {
+        setLoading(false);
+        buttonRef.current.disabled = false;
+        navigate("/reset-pwd");
+      }
+    } catch (error) {
+      setLoading(false);
+      buttonRef.current.disabled = false;
+      console.log(error);
+    }
+  };
+
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -18,20 +44,8 @@ function ForgotPwd() {
       else if (!isValidEmail(values.email)) errors.email = "Not a valid email";
       return errors;
     },
-    onSubmit: (values) => {
-      submitEmail;
-    },
+    onSubmit: submitEmail,
   });
-
-  const submitEmail = async (e) => {
-    try {
-      const { data } = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/auth/sendcode`,
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const isValidEmail = (email) => {
     const pattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -64,14 +78,23 @@ function ForgotPwd() {
             errorMessage={formik.errors["email"]}
           />
           <button
-            className={`mt-3 block rounded-full bg-amber-500 px-4 py-1 text-lg text-white shadow-md transition ${
+            ref={buttonRef}
+            type="submit"
+            className={`relative mt-5 flex items-center justify-center rounded-full bg-amber-500 px-4 py-1 text-lg text-white shadow-md transition ${
               formik.isValid && formik.dirty
                 ? "hover:scale-105 active:scale-95"
                 : ""
             } disabled:bg-gray-400 dark:bg-orange-500 dark:disabled:bg-gray-500`}
             disabled={!formik.isValid || !formik.dirty}
           >
-            Send Code
+            <>
+              {isLoading && (
+                <span className="absolute flex items-center justify-center">
+                  <span className="loader absolute h-8 w-8 before:h-8 before:w-8 before:border-black after:h-8 after:w-8 after:border-black dark:before:border-white dark:after:border-white"></span>
+                </span>
+              )}
+              <span className={`${isLoading && "opacity-0"}`}>Send code</span>
+            </>
           </button>
         </form>
       </motion.div>
