@@ -1,13 +1,17 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQueryClient } from "react-query";
+import { useNavigate } from "react-router-dom";
 
 export const CartContext = createContext(null);
 
 export function CartContextProvider({ children }) {
   const token = localStorage.getItem("userToken");
   const [loading, setLoading] = useState(false);
+  const [copoun, setCoupon] = useState("");
   const [count, setCount] = useState(0);
+  const queryClient = useQueryClient();
   const addProductToCart = async (productId) => {
     try {
       const { data } = await axios.post(
@@ -31,7 +35,7 @@ export function CartContextProvider({ children }) {
       setCount(data.count);
       return data;
     } catch (error) {
-      console.log(error);
+      return error;
     }
   };
 
@@ -43,7 +47,9 @@ export function CartContextProvider({ children }) {
         { productId },
         { headers: { Authorization: `Tariq__${token}` } },
       );
+      console.log(data);
       setLoading(false);
+      queryClient.refetchQueries("cart");
       return data;
     } catch (error) {
       setLoading(false);
@@ -56,14 +62,52 @@ export function CartContextProvider({ children }) {
     try {
       const { data } = await axios.patch(
         `${import.meta.env.VITE_API_URL}/cart/clear`,
-        { header: { Authorization: `Tariq__${token}` } },
+        {},
+        { headers: { Authorization: `Tariq__${token}` } },
       );
       setLoading(false);
+      queryClient.refetchQueries("cart");
       return data;
     } catch (error) {
       setLoading(false);
       initiatToast(true, "An error occurred");
       return error;
+    }
+  };
+
+  const increaseQuantity = async (productId) => {
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/cart/incraseQuantity`,
+        { productId },
+        { headers: { Authorization: `Tariq__${token}` } },
+      );
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const decreaseQuantity = async (productId) => {
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/cart/decraseQuantity`,
+        { productId },
+        { headers: { Authorization: `Tariq__${token}` } },
+      );
+      await checkQuantity(data.cart.products, productId);
+      return data;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  const checkQuantity = async (cart, productId) => {
+    const quantity = cart.find(
+      (product) => product.productId == productId,
+    ).quantity;
+    if (quantity == 0) {
+      await removeProduct(productId);
     }
   };
 
@@ -94,6 +138,9 @@ export function CartContextProvider({ children }) {
     }
   };
 
+  //FIXME: count in navbar does not update because getCartProducts
+  // only runs on mount so I think it might have something to do with
+  // the way I call getCartProducts in the first place
   useEffect(() => {
     getCartProducts();
   }, []);
@@ -106,6 +153,8 @@ export function CartContextProvider({ children }) {
         removeProduct,
         count,
         clearCart,
+        increaseQuantity,
+        decreaseQuantity,
         loading,
       }}
     >

@@ -1,5 +1,5 @@
 import Container from "../shared/Container";
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { UserContext } from "../../Contexts/UserContext";
@@ -94,12 +94,19 @@ function Navbar() {
                     className={`mx-1 rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600`}
                   >
                     <Link to={"/Cart"}>
-                      <span
-                        className={`relative`}
-                      >
+                      <span className={`relative`}>
                         Cart
-                        <span className="absolute dark:bg-orange-500 bg-amber-500 dark:text-white text-black text-sm font-bold px-1 rounded-md -top-2">{count}</span>
+                        <span className="absolute -top-2 rounded-md bg-amber-500 px-1 text-sm font-bold text-black dark:bg-orange-500 dark:text-white">
+                          {count}
+                        </span>
                       </span>
+                    </Link>
+                  </li>
+                )}
+                {userToken && (
+                  <li className="mx-1 rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600 ">
+                    <Link className="" to={"/orders"}>
+                      Orders
                     </Link>
                   </li>
                 )}

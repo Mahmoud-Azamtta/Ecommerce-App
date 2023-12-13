@@ -1,7 +1,6 @@
 import { useEffect, useContext } from "react";
 import "./App.css";
 import { RouterProvider } from "react-router-dom";
-
 import { CartContextProvider } from "./Contexts/CartContext";
 import { UserContext } from "./Contexts/UserContext";
 import useTheme from "./hooks/useTheme";

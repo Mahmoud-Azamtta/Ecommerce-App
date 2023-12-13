@@ -17,6 +17,8 @@ import Profile from "../components/web/Profile";
 import UserInfo from "../components/web/UserInfo";
 import Contacts from "../components/web/Contacts";
 import ResetPwd from "../components/web/ResetPwd";
+import MakeOrder from "../components/web/MakeOrder";
+import GetOrders from "../components/web/GetOrders";
 
 const isLoggedin = () => {
   const { userToken } = useContext(UserContext);
@@ -100,6 +102,30 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute condition={isLoggedin} replacementRoute={"/login"}>
             <Cart />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "make-order/:coupon",
+        element: (
+          <ProtectedRoute condition={isLoggedin} replacementRoute={"/login"}>
+            <MakeOrder />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "make-order",
+        element: (
+          <ProtectedRoute condition={isLoggedin} replacementRoute={"/login"}>
+            <MakeOrder />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "orders",
+        element: (
+          <ProtectedRoute condition={isLoggedin} replacementRoute={"/login"}>
+            <GetOrders />
           </ProtectedRoute>
         ),
       },
