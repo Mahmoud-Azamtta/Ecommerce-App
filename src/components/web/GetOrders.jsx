@@ -6,6 +6,7 @@ import axios from "axios";
 import { UserContext } from "../../Contexts/UserContext";
 import Loader from "../shared/Loader";
 import Error from "../shared/Error";
+import Dropdown from "../shared/Dropdown";
 
 function GetOrders() {
   const { userToken } = useContext(UserContext);
@@ -96,55 +97,41 @@ function GetOrders() {
                       <p className="mt-2 capitalize">{order.paymentType}</p>
                     </div>
                   </div>
-                  <button
-                    className="my-3 dark:bg-gray-600 bg-gray-300 px-5 rounded-xl flex w-full items-center justify-between border-y border-gray-300 py-2 text-lg font-bold dark:border-gray-700"
-                    onClick={handleClick}
+                  <Dropdown
+                    buttonClass={
+                      "my-3 flex w-full items-center justify-between rounded-xl border-y border-gray-300 bg-gray-300 px-5 py-2 text-lg font-bold dark:border-gray-700 dark:bg-gray-600"
+                    }
                   >
-                    <span>Products</span>
-                    <svg
-                      fill="#030712"
-                      width="24px"
-                      height="24px"
-                      className="rounded-full bg-gray-300 dark:bg-gray-400"
-                      viewBox="-8.5 0 32 32"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <title>angle-down</title>
-                      <path d="M7.28 20.040c-0.24 0-0.44-0.080-0.6-0.24l-6.44-6.44c-0.32-0.32-0.32-0.84 0-1.2 0.32-0.32 0.84-0.32 1.2 0l5.84 5.84 5.84-5.84c0.32-0.32 0.84-0.32 1.2 0 0.32 0.32 0.32 0.84 0 1.2l-6.44 6.44c-0.16 0.16-0.4 0.24-0.6 0.24z"></path>
-                    </svg>
-                  </button>
-                  {order.products.map((product, index) => (
                     <div
-                      key={index}
-                      className="text-md mt-3 grid  auto-cols-auto grid-cols-2 gap-5 sm:text-lg md:grid-cols-3 xl:grid-cols-4"
+                      className="
+                        text-md mt-3 grid  auto-cols-auto grid-cols-2 gap-5 sm:text-lg md:grid-cols-3 xl:grid-cols-4
+                    "
                     >
-                      <div className="flex flex-col">
-                        <h3 className="font-bold underline underline-offset-4">
-                          Product ID
-                        </h3>
-                        <p className="mt-2">{product.productId}</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <h3 className="font-bold underline underline-offset-4">
-                          Quantity
-                        </h3>
-                        <p className="mt-2">{product.quantity}</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <h3 className="font-bold underline underline-offset-4">
-                          Unit Price
-                        </h3>
-                        <p className="mt-2">{product.unitPrice}</p>
-                      </div>
-                      <div className="flex flex-col">
-                        <h3 className="font-bold underline underline-offset-4">
-                          Final Price
-                        </h3>
-                        <p className="mt-2">{product.finalPrice}</p>
-                      </div>
+                      <h3 className="font-bold underline underline-offset-4">
+                        Product ID
+                      </h3>
+                      <h3 className="font-bold underline underline-offset-4">
+                        Quantity
+                      </h3>
+                      <h3 className="font-bold underline underline-offset-4">
+                        Unit Price
+                      </h3>
+                      <h3 className="font-bold underline underline-offset-4">
+                        Final Price
+                      </h3>
                     </div>
-                  ))}
+                    {order.products.map((product, index) => (
+                      <div
+                        key={index}
+                        className="text-md mt-3 grid grid-cols-2 gap-5 sm:text-lg md:grid-cols-3 xl:grid-cols-4"
+                      >
+                        <p className="">{product.productId}</p>
+                        <p className="">{product.quantity}</p>
+                        <p className="">{product.unitPrice}</p>
+                        <p className="">{product.finalPrice}</p>
+                      </div>
+                    ))}
+                  </Dropdown>
                 </div>
               ))
             ) : (
