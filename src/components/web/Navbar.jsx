@@ -71,7 +71,7 @@ function Navbar() {
                   <li
                     className={`mx-1 block rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600 md:hidden `}
                   >
-                    <Link to={"/profile"}>Profile</Link>
+                    <Link to={"profile"}>Profile</Link>
                   </li>
                 )}
                 <li className="mx-1 rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600">
@@ -80,12 +80,12 @@ function Navbar() {
                   </Link>
                 </li>
                 <li className="mx-1 rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600 ">
-                  <Link className="" to={"/categories"}>
+                  <Link className="" to={"categories"}>
                     Categories
                   </Link>
                 </li>
                 <li className="mx-1 rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600 ">
-                  <Link className="" to={"/products"}>
+                  <Link className="" to={"products?page=1"}>
                     Products
                   </Link>
                 </li>
@@ -105,7 +105,7 @@ function Navbar() {
                 )}
                 {userToken && (
                   <li className="mx-1 rounded-md px-2 py-1 transition hover:bg-gray-400 dark:hover:bg-gray-600 ">
-                    <Link className="" to={"/orders"}>
+                    <Link className="" to={"orders"}>
                       Orders
                     </Link>
                   </li>
@@ -152,7 +152,7 @@ function Navbar() {
                   </>
                 ) : (
                   <>
-                    <Link to={"/register"}>
+                    <Link to={"register"}>
                       <motion.button
                         initial={{
                           background:
@@ -169,7 +169,7 @@ function Navbar() {
                         Create Account
                       </motion.button>
                     </Link>
-                    <Link to={"/login"}>
+                    <Link to={"login"}>
                       <motion.button
                         initial={{
                           background:
