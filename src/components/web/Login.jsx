@@ -135,9 +135,7 @@ function Login() {
             >
               <>
                 {isLoading && (
-                  <span className="absolute flex items-center justify-center">
-                    <span className="loader absolute h-8 w-8 before:h-8 before:w-8 before:border-black after:h-8 after:w-8 after:border-black dark:before:border-white dark:after:border-white"></span>
-                  </span>
+                    <span className="loader absolute top-0 bottom-0 h-2 w-2 before:h-2 before:-left-3 before:w-2 before:border-black after:h-2 after:w-2 after:left-3 after:border-black dark:before:border-white dark:after:border-white"></span>
                 )}
                 <span className={`${isLoading && "opacity-0"}`}>Login</span>
               </>

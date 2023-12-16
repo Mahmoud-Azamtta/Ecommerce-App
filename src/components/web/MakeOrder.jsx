@@ -106,9 +106,7 @@ function MakeOrder() {
           >
             <>
               {isLoading && (
-                <span className="absolute flex items-center justify-center">
-                  <span className="loader absolute h-8 w-8 before:h-8 before:w-8 before:border-black after:h-8 after:w-8 after:border-black dark:before:border-white dark:after:border-white"></span>
-                </span>
+                <span className="loader absolute bottom-0 top-0 h-2 w-2 before:-left-3 before:h-2 before:w-2 before:border-black after:left-3 after:h-2 after:w-2 after:border-black dark:before:border-white dark:after:border-white"></span>
               )}
               <span className={`${isLoading && "opacity-0"}`}>Confirm</span>
             </>
