@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 
-function Dropdown({ buttonClass, menuClass, children }) {
+function Dropdown({ buttonFontSize, menuClass, title, children }) {
   const menuRef = useRef(null);
   const [dropped, setDropped] = useState(false);
   const controls = useAnimationControls();
@@ -19,12 +19,12 @@ function Dropdown({ buttonClass, menuClass, children }) {
 
   const button = {
     close: {
-      rotate: 0
+      rotate: 0,
     },
     drop: {
-      rotate: 180
+      rotate: 180,
     },
-  }
+  };
 
   const handleClick = () => {
     if (dropped) {
@@ -37,8 +37,11 @@ function Dropdown({ buttonClass, menuClass, children }) {
 
   return (
     <div className="dropdown-wrapper">
-      <button className={buttonClass} onClick={handleClick}>
-        <span>Products</span>
+      <button
+        className={`my-3 flex w-full items-center justify-between rounded-xl border-y border-gray-300 bg-gray-300 px-5 py-2 font-bold dark:border-gray-700 dark:bg-gray-600 ${buttonFontSize}`}
+        onClick={handleClick}
+      >
+        <span>{title}</span>
         <motion.svg
           initial="close"
           animate={controls}

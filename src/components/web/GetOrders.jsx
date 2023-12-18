@@ -98,9 +98,8 @@ function GetOrders() {
                     </div>
                   </div>
                   <Dropdown
-                    buttonClass={
-                      "my-3 flex w-full items-center justify-between rounded-xl border-y border-gray-300 bg-gray-300 px-5 py-2 text-lg font-bold dark:border-gray-700 dark:bg-gray-600"
-                    }
+                    title="Products"
+                    buttonFontSize="text-lg"
                   >
                     <div
                       className="

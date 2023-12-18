@@ -19,6 +19,7 @@ import Contacts from "../components/web/Contacts";
 import ResetPwd from "../components/web/ResetPwd";
 import MakeOrder from "../components/web/MakeOrder";
 import GetOrders from "../components/web/GetOrders";
+import ProductDetails from "../components/web/ProductDetails";
 
 const isLoggedin = () => {
   const { userToken } = useContext(UserContext);
@@ -96,6 +97,10 @@ export const router = createBrowserRouter([
       {
         path: "products",
         element: <Products />,
+      },
+      {
+        path: "product/:productId",
+        element: <ProductDetails />,
       },
       {
         path: "cart",
