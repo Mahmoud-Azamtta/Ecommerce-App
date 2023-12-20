@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 import Error from "../shared/Error";
 import Dropdown from "../shared/Dropdown";
-import { format, sub } from "date-fns";
+import { format } from "date-fns";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { UserContext } from "../../Contexts/UserContext";
@@ -23,7 +23,7 @@ function Reviews({ reviews, productId }) {
       .min(0, "Rate from 1 to 5")
       .max(5, "Rate from 1 to 5"),
   });
-  const submitReview = async (values) => {
+  const submitReview = async (values, formikBag) => {
     console.log(values);
     setLoading(true);
     buttonRef.current.disabled = true;
@@ -39,7 +39,7 @@ function Reviews({ reviews, productId }) {
     } finally {
       setLoading(false);
       buttonRef.current.disabled = false;
-      formik.resetForm();
+      formikBag.resetForm();
     }
   };
 
@@ -73,7 +73,7 @@ function Reviews({ reviews, productId }) {
   const formik = useFormik({
     initialValues: {
       comment: "",
-      rating: 0,
+      rating: "",
     },
     validationSchema: validationSchema,
     onSubmit: submitReview,
@@ -136,6 +136,7 @@ function Reviews({ reviews, productId }) {
               min={0}
               max={5}
               className="appearance:textfield] w-8 appearance-none rounded-md border border-gray-400 bg-gray-100 text-center text-lg dark:border-gray-700 dark:bg-gray-800 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              value={formik.values.rating}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
@@ -151,6 +152,7 @@ function Reviews({ reviews, productId }) {
             rows="5"
             placeholder="Tried this product? Tell us how was it?"
             className="w-full resize-none rounded-xl border border-gray-400 bg-gray-100 px-3 py-2 placeholder:text-sm dark:border-gray-700 dark:bg-gray-800"
+            value={formik.values.comment}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           ></textarea>
