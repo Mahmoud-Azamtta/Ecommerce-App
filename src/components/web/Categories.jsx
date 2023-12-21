@@ -17,10 +17,10 @@ function Categories() {
     <Container>
       <h1 className="pb-5 pt-20 text-4xl font-bold">Categories</h1>
       <hr className="mb-10" />
-      <div className="grid grid-cols-4 gap-10">
+      <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 grid-cols-2 md:gap-10 gap-5 mb-10">
         {data?.categories.length ? (
           data?.categories.map((category) => (
-            <div className="category" key={category._id}>
+            <div className="category dark:bg-gray-900 bg-gray-200 border dark:border-gray-700 border-gray-400 bg- p-10 rounded-xl" key={category._id}>
               <img
                 src={category.image.secure_url}
                 alt="category"

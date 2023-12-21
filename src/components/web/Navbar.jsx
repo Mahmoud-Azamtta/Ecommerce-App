@@ -64,7 +64,7 @@ function Navbar() {
             </h2>
             <div
               ref={navItems}
-              className="nav-items dakr:border absolute right-0 top-16 w-auto translate-x-full items-center justify-between rounded-s-2xl border border-r-0 border-gray-600 bg-gray-100 p-3 transition-transform duration-300 ease-in-out dark:border-gray-600 dark:bg-gray-900 md:static md:ml-3 md:flex md:w-full md:translate-x-0 md:border-0 md:bg-transparent md:py-0 md:dark:bg-transparent"
+              className="nav-items dakr:border absolute right-0 top-16 w-auto translate-x-full items-center justify-between rounded-s-2xl border border-r-0 border-gray-600 p-3 transition-transform duration-300 ease-in-out dark:border-gray-600 dark:bg-gray-900 bg-gray-200 md:static md:ml-3 md:flex md:w-full md:translate-x-0 md:border-0 md:bg-transparent md:py-0 md:dark:bg-transparent"
             >
               <ul className="md:flex">
                 {userToken && (
@@ -199,10 +199,10 @@ function Navbar() {
                 <img ref={themeButtonRef} src="/images/dark-mode.svg" alt="" />
               </button>
               <button
-                className="block rounded-md px-2 transition hover:bg-gray-800 active:bg-gray-950 md:hidden"
+                className="block rounded-md p-2 transition dark:hover:bg-gray-800 dark:active:bg-gray-950 md:hidden hover:bg-gray-200 active:bg-gray-400"
                 onClick={handleBurgerClick}
               >
-                <img src="/images/burger-menu.svg" alt="" />
+                <img src="/images/burger-menu.svg" alt="burger-icon" />
               </button>
             </div>
           </div>

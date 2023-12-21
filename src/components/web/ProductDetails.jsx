@@ -52,14 +52,14 @@ function ProductDetails() {
   return (
     <Container>
       <div className="mb-10 grid grid-cols-2 gap-8 pt-20">
-        <div className="img-wrapper flex justify-center rounded-3xl border border-gray-500 bg-gray-200 p-10 shadow-lg dark:border-gray-700 dark:bg-gray-900">
+        <div className="img-wrapper col-span-2 flex h-fit justify-center rounded-3xl border border-gray-500 bg-gray-200 p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900 sm:p-10 md:col-span-1 md:p-5 lg:p-10">
           <img
             src={product.mainImage.secure_url}
             alt="product image"
             className="rounded-2xl shadow-md"
           />
         </div>
-        <div className="details h-fit rounded-3xl border border-gray-500 bg-gray-200 p-10 shadow-lg dark:border-gray-700 dark:bg-gray-900">
+        <div className="details col-span-2 h-fit rounded-3xl border border-gray-500 bg-gray-200 p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900 sm:p-10 md:col-span-1 md:p-5 lg:p-10">
           <h1 className="border-b border-gray-400 pb-3 text-2xl font-bold capitalize dark:border-gray-700">
             {product.name}
           </h1>
@@ -106,7 +106,7 @@ function ProductDetails() {
               )}
             </div>
           </div>
-          <p className="mb-4 mt-5 border-b border-gray-400 pb-3 dark:border-gray-700">
+          <p className="mb-4 mt-5 border-b border-gray-400 pb-3 text-xs dark:border-gray-700 sm:text-base md:text-sm lg:text-base">
             {product.description}
           </p>
           <button

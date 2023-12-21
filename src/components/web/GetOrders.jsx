@@ -7,6 +7,7 @@ import { UserContext } from "../../Contexts/UserContext";
 import Loader from "../shared/Loader";
 import Error from "../shared/Error";
 import Dropdown from "../shared/Dropdown";
+import { data } from "autoprefixer";
 
 function GetOrders() {
   const { userToken } = useContext(UserContext);
@@ -17,12 +18,7 @@ function GetOrders() {
     return data.orders;
   };
 
-  const controls = useAnimationControls();
   const { data: orders, isLoading } = useQuery("orders", getOrders);
-  const handleClick = () => {
-    console.log("clicked");
-    controls.start({ scaleY: 1, height: initial.height });
-  };
 
   if (isLoading) {
     return (
@@ -97,37 +93,33 @@ function GetOrders() {
                       <p className="mt-2 capitalize">{order.paymentType}</p>
                     </div>
                   </div>
-                  <Dropdown
-                    title="Products"
-                    buttonFontSize="text-lg"
-                  >
+                  <Dropdown title="Products" buttonFontSize="text-lg">
                     <div
-                      className="
-                        text-md mt-3 grid  auto-cols-auto grid-cols-2 gap-5 sm:text-lg md:grid-cols-3 xl:grid-cols-4
+                      className="lg:text-base mt-3 grid grid-cols-4 text-xs md:text-sm
                     "
                     >
-                      <h3 className="font-bold underline underline-offset-4">
+                      <h3 className="text-center font-bold underline underline-offset-4">
                         Product ID
                       </h3>
-                      <h3 className="font-bold underline underline-offset-4">
+                      <h3 className="text-center font-bold underline underline-offset-4">
                         Quantity
                       </h3>
-                      <h3 className="font-bold underline underline-offset-4">
+                      <h3 className="text-center font-bold underline underline-offset-4">
                         Unit Price
                       </h3>
-                      <h3 className="font-bold underline underline-offset-4">
+                      <h3 className="text-center font-bold underline underline-offset-4">
                         Final Price
                       </h3>
                     </div>
                     {order.products.map((product, index) => (
                       <div
                         key={index}
-                        className="text-md mt-3 grid grid-cols-2 gap-5 sm:text-lg md:grid-cols-3 xl:grid-cols-4"
+                        className="lg:text-base mt-3 grid grid-cols-4 text-xs md:text-sm"
                       >
-                        <p className="">{product.productId}</p>
-                        <p className="">{product.quantity}</p>
-                        <p className="">{product.unitPrice}</p>
-                        <p className="">{product.finalPrice}</p>
+                        <p className="break-words text-center">{product.productId}</p>
+                        <p className="text-center">{product.quantity}</p>
+                        <p className="text-center">{product.unitPrice}</p>
+                        <p className="text-center">{product.finalPrice}</p>
                       </div>
                     ))}
                   </Dropdown>

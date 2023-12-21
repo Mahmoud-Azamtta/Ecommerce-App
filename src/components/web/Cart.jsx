@@ -53,9 +53,9 @@ function Cart() {
         <h2 className="border-gray- border-b pb-5 mb-3 pt-20 text-4xl font-bold dark:border-gray-700">
           Prodcuts in Cart
         </h2>
-        <div className="grid min-h-screen grid-cols-6 gap-5">
+        <div className="grid min-h-screen xl:grid-cols-6 lg:grid-cols-8 gap-5">
           {!loading ? (
-            <div className="col-span-4">
+            <div className="xl:col-span-4 lg:col-span-5">
               {data?.products ? (
                 data.products.length ? (
                   data.products.map((product) => (
@@ -64,14 +64,14 @@ function Cart() {
                       className="product my-5 rounded-xl border border-gray-300 bg-gray-200 p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900"
                     >
                       <div className="grid grid-cols-6 gap-5">
-                        <div className="product-image flex items-center">
+                        <div className="product-image xl:col-span-1 md:col-span-1 sm:col-span-2 col-span-3 flex items-center">
                           <img
                             src={product.details.mainImage.secure_url}
                             alt="product picture"
                             className="w-full rounded-md shadow-lg"
                           />
                         </div>
-                        <div className="product-info col-span-2 flex flex-col justify-center">
+                        <div className="product-info xl:col-span-2 md:col-span-5 sm:col-span-4 col-span-3 flex flex-col justify-center">
                           <h3 className="product-title text-lg font-bold">
                             {product.details.name}
                           </h3>
@@ -90,10 +90,10 @@ function Cart() {
                             <img src="/images/trash.svg" alt="remove icon" />
                           </button>
                         </div>
-                        <div className="quantity flex justify-center border-x border-gray-300 dark:border-gray-700">
-                          <div className="buttons flex flex-col items-center justify-center ">
+                        <div className="quantity flex xl:col-span-1 col-span-2 justify-center xl:border-x border-r border-gray-300 dark:border-gray-700">
+                          <div className="buttons flex xl:flex-col gap-2 flex-row-reverse items-center justify-center ">
                             <button
-                              className="increase rotate-180 rounded-full bg-gray-300 p-0.5 text-lg hover:bg-gray-100 dark:bg-gray-300 dark:hover:bg-gray-400"
+                              className="increase xl:rotate-180 -rotate-90 rounded-full bg-gray-300 p-0.5 text-lg hover:bg-gray-100 dark:bg-gray-300 dark:hover:bg-gray-400"
                               onClick={() =>
                                 increaseQuantity(product.productId)
                               }
@@ -104,7 +104,7 @@ function Cart() {
                               {product.quantity}
                             </span>
                             <button
-                              className="decrease hello rounded-full bg-gray-300 p-0.5 text-lg hover:bg-gray-100 dark:bg-gray-300 dark:hover:bg-gray-400"
+                              className="decrease hello xl:rotate-0 rotate-90 rounded-full bg-gray-300 p-0.5 text-lg hover:bg-gray-100 dark:bg-gray-300 dark:hover:bg-gray-400"
                               onClick={() =>
                                 decreaseQuantity(product.productId)
                               }
@@ -113,11 +113,11 @@ function Cart() {
                             </button>
                           </div>
                         </div>
-                        <p className="price my-auto text-center text-lg">
+                        <p className="price my-auto xl:col-span-1 col-span-2 text-center md:text-lg text-md">
                           <span className="font-bold">Price:</span>{" "}
                           <span>{product.details.price}</span>$
                         </p>
-                        <p className="sub-total my-auto text-center text-lg">
+                        <p className="sub-total my-auto xl:col-span-1 col-span-2 text-center md:text-lg text-md">
                           <span className="font-bold">Total:</span>{" "}
                           <span>{product.details.finalPrice}</span>$
                         </p>
@@ -138,7 +138,7 @@ function Cart() {
               <Loader />
             </div>
           )}
-          <div className="col-span-2">
+          <div className="xl:col-span-2 lg:col-span-3">
             <div className="summary my-5 rounded-xl border border-gray-300 bg-gray-200 p-5 shadow-lg dark:border-gray-700 dark:bg-gray-900">
               <h2 className="mb-3 border-b border-gray-300 pb-3 text-center text-2xl font-bold dark:border-gray-700">
                 Cart Summary
@@ -221,9 +221,9 @@ function Cart() {
                   $
                 </span>
               </div>
-              <div className="buttons grid grid-cols-3 gap-5">
+              <div className="buttons grid grid-cols-5 gap-5">
                 <button
-                  className={`col-span-2 rounded-md bg-amber-500 py-1 text-lg text-white shadow-md transition ${
+                  className={`col-span-3 rounded-md bg-amber-500 py-1 text-lg text-white shadow-md transition ${
                     data?.products.length
                       ? "hover:scale-105 active:scale-95"
                       : ""
@@ -234,7 +234,7 @@ function Cart() {
                   Checkout
                 </button>
                 <button
-                  className={`flex items-center justify-center rounded-md border border-red-600 bg-red-200 py-1 text-lg text-red-600 shadow-md transition ${
+                  className={`flex col-span-2 items-center justify-center rounded-md border border-red-600 bg-red-200 py-1 text-red-600 shadow-md transition ${
                     data?.products.length
                       ? "hover:scale-105 active:scale-95"
                       : ""
@@ -245,7 +245,7 @@ function Cart() {
                   <img
                     src="/images/trash.svg"
                     alt="remove icon"
-                    className="mr-2"
+                    className="mr-1"
                   />
                   Clear All
                 </button>
